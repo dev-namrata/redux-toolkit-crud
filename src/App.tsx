@@ -1,25 +1,23 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { UserDetail } from './component/userDetail';
+
+function add(a: number, b: any) {
+  return a + b;
+}
+
+const res = add(2, '4');
+console.log(res);
+
+localStorage.setItem('name', 'namrata');
+console.log(localStorage.getItem(' name'));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <UserDetail />
+    </>
   );
 }
 
