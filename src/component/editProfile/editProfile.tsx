@@ -13,9 +13,13 @@ export const EditProfile = ({
   userId,
   setEditData,
   editData,
+  setSelectedFile,
 }: any) => {
   const dispatch = useDispatch();
-  console.log(editData, 'After Eidted');
+
+  console.log(selectedFile, 'EditProfile');
+
+  const [showProfile, setShowProfile] = useState(false);
 
   const handleDone = () => {
     dispatch(
@@ -24,6 +28,7 @@ export const EditProfile = ({
           id: editData.id,
           first_name: editData.name,
           email: editData.email,
+          avatar: editData.selectedFile,
         },
       })
     );
@@ -31,14 +36,26 @@ export const EditProfile = ({
     setEditData('');
 
     setOpen(false);
+    setShowProfile(false);
   };
 
-  const handleNameChange = (e: any) => {
-    setEditData({ ...editData, name: e.target.value });
-  };
+  const [fileInfo, setFileInfo] = useState(
+    selectedFile ? selectedFile.name : ''
+  );
 
-  const handleEmailChange = (e: any) => {
-    setEditData({ ...editData, email: e.target.value });
+  const handleFileChange = (event: any) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setEditData({ ...editData, selectedFile: imageUrl });
+      setFileInfo(file.name);
+    }
+  };
+  console.log('Updated Profile', selectedFile);
+
+  const handleUserProfile = () => {
+    setShowProfile(true);
   };
 
   return (
@@ -60,17 +77,45 @@ export const EditProfile = ({
           label="Name"
           fullWidth
           value={editData.name}
-          onChange={handleNameChange}
+          onChange={(e) => setEditData({ ...editData, name: e.target.value })}
           margin="normal"
         />
         <TextField
           label="Email"
           fullWidth
           value={editData.email}
-          onChange={handleEmailChange}
+          onChange={(e) => setEditData({ ...editData, email: e.target.value })}
           margin="normal"
         />
-        <input type="file" accept="image/*" style={{ margin: '16px 0' }} />
+        {showProfile && (
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ margin: '16px 0' }}
+          />
+        )}
+
+        <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+          <p>Your Profile</p>
+          <img
+            src={editData?.selectedFile}
+            style={{
+              width: '50px',
+              height: '50px',
+              borderRadius: '30px',
+            }}
+          />
+          <Button
+            color="secondary"
+            variant="contained"
+            size="small"
+            onClick={handleUserProfile}
+          >
+            Edit Profile
+          </Button>
+        </div>
+
         <Button variant="contained" onClick={handleDone}>
           Done
         </Button>

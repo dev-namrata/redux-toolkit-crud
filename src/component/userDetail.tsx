@@ -33,11 +33,11 @@ export const UserDetail = () => {
     selectedFile: '',
     id: null,
   });
+  console.log(selectedFile, 'userdetail');
+
   const { contents, isLoading, error } = useSelector(
     (state: RootState) => state.user
   );
-
-  console.log(editData, 'EDITED DATA');
 
   useEffect(() => {
     if (!contents?.length) dispatch(fetchContent());
@@ -102,6 +102,7 @@ export const UserDetail = () => {
         setEditData={setEditData}
         id={editData.id}
         editData={editData}
+        setSelectedFile={setSelectedFile}
       />
       <TableContainer component={Paper}>
         <Table>
