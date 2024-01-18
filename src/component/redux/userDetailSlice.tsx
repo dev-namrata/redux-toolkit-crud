@@ -115,6 +115,21 @@ export const contentSlice = createSlice({
         (user: any) => user.id !== action.payload
       );
     },
+    editUser: (state, action) => {
+      const { updatedData } = action.payload;
+      console.log(updatedData, 'OOOOOOOOOOO');
+
+      const userIndex = state.contents.findIndex(
+        (user: any) => user.id === updatedData.id
+      );
+
+      if (userIndex !== -1) {
+        state.contents[userIndex] = {
+          ...state.contents[userIndex],
+          ...updatedData,
+        };
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchContent.pending, (state) => {
@@ -136,3 +151,4 @@ export const contentSlice = createSlice({
 export default contentSlice.reducer;
 export const { updateContents } = contentSlice.actions;
 export const { deleteUser } = contentSlice.actions;
+export const { editUser } = contentSlice.actions;

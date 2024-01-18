@@ -18,23 +18,33 @@ import { RootState, AppDispatch } from './redux/store';
 import { ProfileModal } from './profile/profileModal';
 import { v4 as uuidv4 } from 'uuid';
 import { updateContents } from './redux/userDetailSlice';
+import { EditProfile } from './editProfile/editProfile';
 
 export const UserDetail = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [open, setOpen] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [editData, setEditData] = useState({
+    name: '',
+    email: '',
+    selectedFile: '',
+    id: null,
+  });
   const { contents, isLoading, error } = useSelector(
     (state: RootState) => state.user
   );
+
+  console.log(editData, 'EDITED DATA');
 
   useEffect(() => {
     if (!contents?.length) dispatch(fetchContent());
   }, []);
 
   const handleAddUser = () => {
-    setOpen(!open);
+    setOpenProfile(!openProfile);
     const resData = {
       id: uuidv4(),
       email: email,
@@ -42,12 +52,11 @@ export const UserDetail = () => {
       avatar: selectedFile,
     };
     dispatch(updateContents(resData));
-    // Reset other state variables
+
     setName('');
     setEmail('');
     setSelectedFile(null);
 
-    // Close the modal
     setOpen(false);
   };
 
@@ -55,11 +64,25 @@ export const UserDetail = () => {
     dispatch(deleteUser(userId));
   };
 
+  const handleEditUser = () => {
+    setOpen(!open);
+  };
+  const onChangeEditHandler = (user: any) => {
+    console.log('user:', user);
+    setOpen(!open);
+    setEditData({
+      name: user.first_name,
+      email: user.email,
+      selectedFile: user.avatar,
+      id: user.id,
+    });
+  };
+
   return (
     <div className="App">
       <ProfileModal
-        open={open}
-        setOpen={setOpen}
+        openProfile={openProfile}
+        setOpenProfile={setOpenProfile}
         setName={setName}
         setEmail={setEmail}
         setSelectedFile={setSelectedFile}
@@ -67,6 +90,18 @@ export const UserDetail = () => {
         name={name}
         email={email}
         handleAddUser={handleAddUser}
+      />
+
+      <EditProfile
+        open={open}
+        setOpen={setOpen}
+        handleEditUser={handleEditUser}
+        selectedFile={editData.selectedFile}
+        name={editData.name}
+        email={editData.email}
+        setEditData={setEditData}
+        id={editData.id}
+        editData={editData}
       />
       <TableContainer component={Paper}>
         <Table>
@@ -78,6 +113,7 @@ export const UserDetail = () => {
               <TableCell>Email</TableCell>
               <TableCell>Image</TableCell>
               <TableCell>Remove User</TableCell>
+              <TableCell>Edit User</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -108,21 +144,27 @@ export const UserDetail = () => {
                     >
                       Remove
                     </Button>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => onChangeEditHandler(user)}
+                      style={{ marginLeft: '30px' }}
+                    >
+                      Edit User
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <TableCell>
-          <Button variant="contained">Add User</Button>
-        </TableCell> */}
+
       <div>
         {' '}
         <Button
           variant="contained"
           style={{ marginTop: '20px', marginLeft: '65%' }}
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpenProfile(!openProfile)}
         >
           Add New User
         </Button>

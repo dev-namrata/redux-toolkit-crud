@@ -2,8 +2,8 @@ import { Modal, Box, TextField, Button } from '@mui/material';
 import { useState } from 'react';
 
 export const ProfileModal = ({
-  open,
-  setOpen,
+  openProfile,
+  setOpenProfile,
   setName,
   setEmail,
   setSelectedFile,
@@ -12,58 +12,6 @@ export const ProfileModal = ({
   email,
   handleAddUser,
 }: any) => {
-  // const [selectedFile, setSelectedFile] = useState(null);
-
-  // const handleFileChange = (event: any) => {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.onload = (event) => {
-  //   //   const fileContent = event.target.result;
-  //   // setSelectedFile(fileContent);
-  //   console.log(event);
-
-  // };
-
-  // const handleAddUser = () => {
-  //   if (name && email && selectedFile) {
-  //     const newUser = {
-  //       name,
-  //       email,
-  //       avatar: selectedFile ? URL.createObjectURL(selectedFile) : null,
-  //     };
-
-  //     console.log(newUser, 'newUser');
-
-  //     //   onAddUser(newUser);
-
-  //     setName('');
-  //     setEmail('');
-  //     setSelectedFile(null);
-  //   }
-  // };
-
-  // const handleFileChange = (event: any) => {
-  //   console.log(event, 'OOOOOOOOoo');
-
-  //   const selectedFile = event.target.files[0];
-  //   console.log(selectedFile, 'selectedFile');
-
-  //   const reader = new FileReader();
-  //   reader.onload = (event) => {
-  //     console.log(event, 'EBETTTTT');
-
-  //     // const fileContent = event.target.result;
-  //     // setSelectedFile(fileContent);
-
-  //     // const imageData = {
-  //     //   name: selectedFile?.name,
-  //     //   file: fileContent,
-  //     // };
-  //   };
-  // };
-
-  const [userData, setUserData] = useState();
-
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
 
@@ -72,10 +20,9 @@ export const ProfileModal = ({
       setSelectedFile(imageUrl);
     }
   };
-  // localStorage.setItem('avtar', selectedFile);
 
   return (
-    <Modal open={open} onClose={() => setOpen(!open)}>
+    <Modal open={openProfile} onClose={() => setOpenProfile(!openProfile)}>
       <Box
         sx={{
           position: 'absolute',
