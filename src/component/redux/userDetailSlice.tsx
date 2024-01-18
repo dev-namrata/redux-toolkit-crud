@@ -107,7 +107,7 @@ export const contentSlice = createSlice({
   initialState,
   reducers: {
     updateContents: (state, action) => {
-      console.log('stateREdux', state);
+      // console.log('stateREdux', state);
       state.contents = [...state.contents, action.payload];
     },
     deleteUser: (state, action) => {
@@ -137,7 +137,7 @@ export const contentSlice = createSlice({
     });
     builder.addCase(fetchContent.fulfilled, (state, action) => {
       state.isLoading = false;
-      console.log('fullfilled:', state);
+      // console.log('fullfilled:', state);
       state.contents = action.payload;
       // state.contents = [...action.payload];
     });
